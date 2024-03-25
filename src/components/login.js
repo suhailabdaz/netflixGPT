@@ -1,13 +1,67 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Header from './Header'
+import { validate } from '../utils/validate'
+import { createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth";
+import {auth} from "../utils/fireBase"
 
 
 const Login = () => {
     const [IsSigninForm,setIsSigninForm]=useState(true)
+    const [errorMessage,setErrorMessage]=useState(null)
+
+    const formEmail=useRef(null)
+    const formPassword=useRef(null)
+    const formName=useRef(null)
+    const email = formEmail.current?.value;
+    const password = formPassword.current?.value;
+
+
+    
 
     const handleSigninForm=()=>{
         setIsSigninForm(!IsSigninForm)
     }
+
+    const handleForm=()=>{
+        const message=validate(formEmail.current.value,formPassword.current.value)
+        setErrorMessage(message)
+        if(message) return ;
+
+        if(!IsSigninForm){
+            createUserWithEmailAndPassword(auth, email,password)
+            .then((userCredential) => {
+              // Signed up 
+              const user = userCredential.user;
+              console.log("user",user);
+              // ...+
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              setErrorMessage(errorCode+" "+errorMessage)
+          
+              // ..
+            });
+
+        }else{
+            signInWithEmailAndPassword(auth, email,password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log("userlogin",user);
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    setErrorMessage(errorCode+" "+errorMessage)
+
+  });
+
+        }
+
+    }
+   
   return (
     <div>
     <Header/>
@@ -17,12 +71,13 @@ const Login = () => {
          alt='img' />
     </div>
     
-    <form className='bg-opacity-85 absolute bg-black p-12 w-3/12 mt-36 mx-auto right-0 left-0 text-white rounded-md' >
+    <form  onSubmit={(e)=>{e.preventDefault()}} className='bg-opacity-85 absolute bg-black p-12 w-3/12 mt-36 mx-auto right-0 left-0 text-white rounded-md' >
     <h1 className=' text-2xl text-slate-50 font-semibold m-2'>{IsSigninForm?"Sign-in":"Sign-up"}</h1>
-    {! IsSigninForm &&<input type='text' placeholder='Full Name' className='p-3 my-4 w-full bg-black border-2 border-slate-50'/>}
-        <input type='text' placeholder='E-mail Address' className='p-3 my-4 w-full bg-black border-2 border-slate-50'/>
-        <input type='text' placeholder='Password' className='p-3 my-4 w-full  bg-black border-2  border-slate-50'/>
-        <button className='p-3 my-4 w-full bg-red-700 font-semibold'>{IsSigninForm ?" Sign-in":"Sign-up"}</button>
+    {! IsSigninForm &&<input type='text' ref={formName} placeholder='Full Name' className='p-3 my-4 w-full bg-black border-2 border-slate-50'/>}
+        <input type='text' ref={formEmail} placeholder='E-mail Address' className='p-3 my-4 w-full bg-black border-2 border-slate-50'/>
+        <input type='password'  ref={formPassword} placeholder='Password' className='p-3 my-4 w-full  bg-black border-2  border-slate-50'/>
+        {errorMessage && <p className='text-red-700'>{errorMessage}</p>}
+        <button onClick={()=>handleForm()} className='p-3 my-4 w-full bg-red-700 font-semibold'>{IsSigninForm ?" Sign-in":"Sign-up"}</button>
         <p className='text-base text-white cursor-pointer' onClick={()=>handleSigninForm()}>{IsSigninForm?"New to Netflix ? Sign-up":"Already a user ? Sign-in"}</p>
     </form> 
 

@@ -2,8 +2,13 @@
 - create-react-app
 - configure tailwind
 - login header
-
-
+- routing
+- signin/up page
+- useref hook
+- validation
+- firebase setup
+- firebase deploy
+- create sign-up user account using firebase
 
 # features
 - login/signup
