@@ -9,6 +9,12 @@
 - firebase setup
 - firebase deploy
 - create sign-up user account using firebase
+- sign in userapi 
+- created redux store with userslice
+- implemented sign out
+- updateprofile
+- browse navigation
+
 
 # features
 - login/signup

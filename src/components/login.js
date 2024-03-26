@@ -1,13 +1,23 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Header from './Header'
 import { validate } from '../utils/validate'
-import { createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile } from "firebase/auth";
 import {auth} from "../utils/fireBase"
-
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice';
 
 const Login = () => {
     const [IsSigninForm,setIsSigninForm]=useState(true)
     const [errorMessage,setErrorMessage]=useState(null)
+    const [isSuccess,setIsSuccess]=useState(false)
+    const navigate=useNavigate()
+    const dispatch=useDispatch()
+
+
+    useEffect(()=>{
+      setIsSuccess(false)
+    })
 
     const formEmail=useRef(null)
     const formPassword=useRef(null)
@@ -32,14 +42,33 @@ const Login = () => {
             .then((userCredential) => {
               // Signed up 
               const user = userCredential.user;
-              console.log("user",user);
+
+              updateProfile(user, {
+                displayName: formName.current.value, photoURL: "https://avatars.githubusercontent.com/u/92252928?v=4"
+              }).then(() => {
+                // Profile updated!
+                const {uid,email,displayName,photoURL} = auth.currentUser;
+                dispatch(addUser({uid:uid,email:email,displayname:displayName,photoURL:photoURL}))
+                navigate("/browse")
+
+                // ...
+              }).catch((error) => {
+                // An error occurred
+                // ..
+                setErrorMessage(error)         
+
+              });
+
+              setIsSuccess(true)
+              setErrorMessage("Sucessfully created")
+
+
               // ...+
             })
             .catch((error) => {
               const errorCode = error.code;
               const errorMessage = error.message;
-              setErrorMessage(errorCode+" "+errorMessage)
-          
+              setErrorMessage(errorCode+" "+errorMessage)         
               // ..
             });
 
@@ -48,7 +77,9 @@ const Login = () => {
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
-    console.log("userlogin",user);
+    setIsSuccess(true)
+              setErrorMessage("logged in")
+              navigate('/browse')
     // ...
   })
   .catch((error) => {
@@ -76,7 +107,7 @@ const Login = () => {
     {! IsSigninForm &&<input type='text' ref={formName} placeholder='Full Name' className='p-3 my-4 w-full bg-black border-2 border-slate-50'/>}
         <input type='text' ref={formEmail} placeholder='E-mail Address' className='p-3 my-4 w-full bg-black border-2 border-slate-50'/>
         <input type='password'  ref={formPassword} placeholder='Password' className='p-3 my-4 w-full  bg-black border-2  border-slate-50'/>
-        {errorMessage && <p className='text-red-700'>{errorMessage}</p>}
+        {errorMessage && <p className={isSuccess ? 'text-red-700' : 'text-green-600'}>{errorMessage}</p>}
         <button onClick={()=>handleForm()} className='p-3 my-4 w-full bg-red-700 font-semibold'>{IsSigninForm ?" Sign-in":"Sign-up"}</button>
         <p className='text-base text-white cursor-pointer' onClick={()=>handleSigninForm()}>{IsSigninForm?"New to Netflix ? Sign-up":"Already a user ? Sign-in"}</p>
     </form> 
