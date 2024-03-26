@@ -6,11 +6,17 @@ import { useSelector } from 'react-redux';
 import useNowPLaying from '../hooks/useNowPlaying';
 import SecondaryContainer from './SecondaryContainer';
 import MainContainer from './mainContainer';
+import usePopular from '../hooks/usePopularMovies';
+import useTopRated from '../hooks/useTopRated';
+import useUpcoming from '../hooks/useUpcoming';
 
 const Browse = () => {
   const userinfo=useSelector(store=>store.user)
 
-    useNowPLaying()
+    useNowPLaying();
+    usePopular();
+    useTopRated();
+    useUpcoming()
   
 
   const signoutHandle=()=>{

@@ -26,6 +26,10 @@
 - i frame youtube video
 - trailer id to redux
 - custom hooks
+- filled secondary contaier for movie list
+- custom hooks for movie types
+- entered new types to redux
+- netflix done
 
 
 # features
