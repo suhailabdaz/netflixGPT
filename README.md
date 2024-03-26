@@ -14,6 +14,18 @@
 - implemented sign out
 - updateprofile
 - browse navigation
+- bugfix - url redirect
+- unsubscribe header auth
+- calling movie api in browse in tmdb fetch()
+- react strict mode - extra rendering to find inconsistency if found throws error
+- browse page starts
+- main container in browse
+- movies data in redux
+- secondary container in browse
+- add hardcoded data to the constants
+- i frame youtube video
+- trailer id to redux
+- custom hooks
 
 
 # features

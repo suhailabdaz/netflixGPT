@@ -6,6 +6,8 @@ import {auth} from "../utils/fireBase"
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
+import { avatar } from '../utils/cosntants';
+import { bg_image } from '../utils/cosntants';
 
 const Login = () => {
     const [IsSigninForm,setIsSigninForm]=useState(true)
@@ -44,7 +46,7 @@ const Login = () => {
               const user = userCredential.user;
 
               updateProfile(user, {
-                displayName: formName.current.value, photoURL: "https://avatars.githubusercontent.com/u/92252928?v=4"
+                displayName: formName.current.value, photoURL: avatar
               }).then(() => {
                 // Profile updated!
                 const {uid,email,displayName,photoURL} = auth.currentUser;
@@ -97,7 +99,7 @@ const Login = () => {
     <div>
     <Header/>
     <div className='absolute'>
-        <img  className='brightness-50' src="https://assets.nflxext.com/ffe/siteui/vlv3/9d3533b2-0e2b-40b2-95e0-ecd7979cc88b/a3873901-5b7c-46eb-b9fa-12fea5197bd3/IN-en-20240311-popsignuptwoweeks-perspective_alpha_website_small.jpg" 
+        <img  className='brightness-50' src={bg_image} 
         srcset="https://assets.nflxext.com/ffe/siteui/vlv3/9d3533b2-0e2b-40b2-95e0-ecd7979cc88b/a3873901-5b7c-46eb-b9fa-12fea5197bd3/IN-en-20240311-popsignuptwoweeks-perspective_alpha_website_small.jpg 1000w, https://assets.nflxext.com/ffe/siteui/vlv3/9d3533b2-0e2b-40b2-95e0-ecd7979cc88b/a3873901-5b7c-46eb-b9fa-12fea5197bd3/IN-en-20240311-popsignuptwoweeks-perspective_alpha_website_medium.jpg 1500w, https://assets.nflxext.com/ffe/siteui/vlv3/9d3533b2-0e2b-40b2-95e0-ecd7979cc88b/a3873901-5b7c-46eb-b9fa-12fea5197bd3/IN-en-20240311-popsignuptwoweeks-perspective_alpha_website_large.jpg 1800w" 
          alt='img' />
     </div>
