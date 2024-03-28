@@ -15,8 +15,6 @@ const Login = () => {
     const [isSuccess,setIsSuccess]=useState(false)
     const navigate=useNavigate()
     const dispatch=useDispatch()
-
-
     useEffect(()=>{
       setIsSuccess(false)
     })
