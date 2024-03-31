@@ -1,4 +1,5 @@
-# netflix-gpt
+# netflix-gpt the journey
+
 - create-react-app
 - configure tailwind
 - login header
